@@ -1,8 +1,12 @@
 ofxMosquitto
 ===
 
-openFrameworks addon for working with Mosquitto (libmosquittopp).  
-About Mosquitto, see [mosquitto.org](http://mosquitto.org/).
+openFrameworks addon to working with Mosquitto.  
+Mosquitto is a open source MQTT library for C/C++.  
+More about, see [mosquitto.org](http://mosquitto.org/).  
+
+**Important:**  
+**This addon is currentlly running on Max OS X only. Tested with Xcode 5 and oF 0.8.0.**
 
 
 ## License
