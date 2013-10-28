@@ -42,12 +42,14 @@ ofxMosquitto::ofxMosquitto(string clientID, string host, int port, bool cleanSes
 
 ofxMosquitto::~ofxMosquitto()
 {
+    lock();
     if (isThreadRunning())
     {
         stopThread();
     }
     
     lib_cleanup();
+    unlock();
 }
 
 int ofxMosquitto::reinitialise(string clientID, bool cleanSession)
@@ -85,6 +87,7 @@ int ofxMosquitto::reconnect()
 
 int ofxMosquitto::disconnect()
 {
+    stop();
     return mosquittopp::disconnect();
 }
 
@@ -105,12 +108,16 @@ int ofxMosquitto::unsubscribe(int mid, string sub)
 
 void ofxMosquitto::start()
 {
+    lock();
     startThread(true, false);
+    unlock();
 }
 
 void ofxMosquitto::stop()
 {
+    lock();
     stopThread();
+    unlock();
 }
 
 void ofxMosquitto::setUsernameAndPassword(string username, string password)
@@ -211,10 +218,10 @@ void ofxMosquitto::on_unsubscribe(int mid)
 
 void ofxMosquitto::on_log(int level, const char *str)
 {
-    ofLogNotice("ofxMosquitto") << "on_log : level = " << level << ", str = " << ofToString(str);
+    ofLogVerbose("ofxMosquitto") << "on_log : level = " << level << ", str = " << ofToString(str);
 }
 
 void ofxMosquitto::on_error()
 {
-    ofLogNotice("ofxMosquitto") << "error";
+    ofLogError("ofxMosquitto") << "error";
 }
