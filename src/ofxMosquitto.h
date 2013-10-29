@@ -28,14 +28,14 @@ public:
     ~ofxMosquitto();
     
     void setup(string host, int port, int keepAlive = 60);
-    int reinitialise(string clientID, bool cleanSession);
-    int connect();
-    int connect(string bindAddress);
-    int reconnect();
-    int disconnect();
-    int publish(string topic, string payload);
-    int subscribe(int mid, string sub, int qos = 0);
-    int unsubscribe(int mid, string sub);
+    void reinitialise(string clientID, bool cleanSession);
+    void connect();
+    void connect(string bindAddress);
+    void reconnect();
+    void disconnect();
+    void publish(string topic, string payload);
+    void subscribe(int mid, string sub, int qos = 0);
+    void unsubscribe(int mid, string sub);
     
     void threadedFunction();
     void start();

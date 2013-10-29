@@ -34,6 +34,7 @@ ofxMosquitto & ofxMosquitto::operator=(const ofxMosquitto &mom)
 
 ofxMosquitto::ofxMosquitto(string clientID, string host, int port, bool cleanSession) : mosquittopp(clientID.c_str(), cleanSession)
 {
+    lib_init();
     this->clientID = clientID;
     this->host = host;
     this->port = port;
@@ -52,58 +53,67 @@ ofxMosquitto::~ofxMosquitto()
     unlock();
 }
 
-int ofxMosquitto::reinitialise(string clientID, bool cleanSession)
+void ofxMosquitto::reinitialise(string clientID, bool cleanSession)
 {
-    return mosquittopp::reinitialise(clientID.c_str(), cleanSession);
+    lock();
+    this->clientID = clientID;
+    int ret = mosquittopp::reinitialise(clientID.c_str(), cleanSession);
+    if (0 < ret) ofLogError("ofxMosquitto") << mosqpp::strerror(ret);
+    unlock();
 }
 
 void ofxMosquitto::setup(string host, int port, int keepAlive)
 {
+    lock();
     this->host = host;
     this->port = port;
     this->keepAlive = keepAlive;
+    unlock();
 }
 
-int ofxMosquitto::connect()
+void ofxMosquitto::connect()
 {
     int ret = mosquittopp::connect(host.c_str(), port, keepAlive);
+    if (0 < ret) ofLogError("ofxMosquitto") << mosqpp::strerror(ret);
     start();
-    
-    return ret;
 }
 
-int ofxMosquitto::connect(string bindAddress)
+void ofxMosquitto::connect(string bindAddress)
 {
     int ret = mosquittopp::connect(host.c_str(), port, keepAlive, bindAddress.c_str());
+    if (0 < ret) ofLogError("ofxMosquitto") << mosqpp::strerror(ret);
     start();
-    
-    return ret;
 }
 
-int ofxMosquitto::reconnect()
+void ofxMosquitto::reconnect()
 {
-    return mosquittopp::reconnect();
+    int ret = mosquittopp::reconnect();
+    if (0 < ret) ofLogError("ofxMosquitto") << mosqpp::strerror(ret);
 }
 
-int ofxMosquitto::disconnect()
+void ofxMosquitto::disconnect()
 {
     stop();
-    return mosquittopp::disconnect();
+    int ret = mosquittopp::disconnect();
+    if (0 < ret) ofLogError("ofxMosquitto") << mosqpp::strerror(ret);
 }
 
-int ofxMosquitto::publish(string topic, string payload)
+void ofxMosquitto::publish(string topic, string payload)
 {
-    return mosquittopp::publish(NULL, topic.c_str(), payload.size(), payload.c_str());
+    int ret = mosquittopp::publish(NULL, topic.c_str(), payload.size(), payload.c_str());
+    if (0 < ret) ofLogError("ofxMosquitto") << mosqpp::strerror(ret);
 }
 
-int ofxMosquitto::subscribe(int mid, string sub, int qos)
+void ofxMosquitto::subscribe(int mid, string sub, int qos)
 {
-    return mosquittopp::subscribe(&mid, sub.c_str(), qos);
+    int ret = mosquittopp::subscribe(&mid, sub.c_str(), qos);
+    if (0 < ret) ofLogError("ofxMosquitto") << mosqpp::strerror(ret);
 }
 
-int ofxMosquitto::unsubscribe(int mid, string sub)
+void ofxMosquitto::unsubscribe(int mid, string sub)
 {
-    return mosquittopp::unsubscribe(&mid, sub.c_str());
+    int ret = mosquittopp::unsubscribe(&mid, sub.c_str());
+    if (0 < ret) ofLogError("ofxMosquitto") << mosqpp::strerror(ret);
 }
 
 void ofxMosquitto::start()
@@ -159,6 +169,7 @@ void ofxMosquitto::threadedFunction()
             int rc = loop();
             if (0 < rc && bAutoReconnect)
             {
+                ofLogError("ofxMosquitto") << mosqpp::strerror(rc);
                 reconnect();
                 ofSleepMillis(20);
             }
@@ -172,7 +183,7 @@ void ofxMosquitto::on_connect(int rc)
     if (MOSQ_ERR_SUCCESS == rc)
     {
         bConnected = true;
-    }
+    } else ofLogError("ofxMosquitto") << mosqpp::strerror(rc);
     
     ofNotifyEvent(onConnect, rc, this);
 }
@@ -182,7 +193,7 @@ void ofxMosquitto::on_disconnect(int rc)
     if (MOSQ_ERR_SUCCESS == rc)
     {
         bConnected = false;
-    }
+    } else ofLogError("ofxMosquitto") << mosqpp::strerror(rc);
     
     ofNotifyEvent(onDisconnect, rc, this);
 }
