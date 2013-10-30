@@ -7,7 +7,6 @@ ofxMosquitto::ofxMosquitto() : mosquittopp()
     lib_init();
     bConnected = false;
     bAutoReconnect = true;
-    timestamp = ofGetTimestampString();
 }
 
 ofxMosquitto::ofxMosquitto(const ofxMosquitto& mom)
@@ -57,8 +56,7 @@ void ofxMosquitto::reinitialise(string clientID, bool cleanSession)
 {
     lock();
     this->clientID = clientID;
-    int ret = mosquittopp::reinitialise(clientID.c_str(), cleanSession);
-    if (0 < ret) ofLogError("ofxMosquitto") << mosqpp::strerror(ret);
+    check_error(mosquittopp::reinitialise(clientID.c_str(), cleanSession));
     unlock();
 }
 
@@ -73,47 +71,40 @@ void ofxMosquitto::setup(string host, int port, int keepAlive)
 
 void ofxMosquitto::connect()
 {
-    int ret = mosquittopp::connect(host.c_str(), port, keepAlive);
-    if (0 < ret) ofLogError("ofxMosquitto") << mosqpp::strerror(ret);
+    check_error(mosquittopp::connect(host.c_str(), port, keepAlive));
     start();
 }
 
 void ofxMosquitto::connect(string bindAddress)
 {
-    int ret = mosquittopp::connect(host.c_str(), port, keepAlive, bindAddress.c_str());
-    if (0 < ret) ofLogError("ofxMosquitto") << mosqpp::strerror(ret);
+    check_error(mosquittopp::connect(host.c_str(), port, keepAlive, bindAddress.c_str()));
     start();
 }
 
 void ofxMosquitto::reconnect()
 {
-    int ret = mosquittopp::reconnect();
-    if (0 < ret) ofLogError("ofxMosquitto") << mosqpp::strerror(ret);
+    check_error(mosquittopp::reconnect());
 }
 
 void ofxMosquitto::disconnect()
 {
     stop();
-    int ret = mosquittopp::disconnect();
-    if (0 < ret) ofLogError("ofxMosquitto") << mosqpp::strerror(ret);
+    check_error(mosquittopp::disconnect());
 }
 
-void ofxMosquitto::publish(string topic, string payload)
+void ofxMosquitto::publish(int mid, string topic, string payload, int qos, bool retain)
 {
-    int ret = mosquittopp::publish(NULL, topic.c_str(), payload.size(), payload.c_str());
-    if (0 < ret) ofLogError("ofxMosquitto") << mosqpp::strerror(ret);
+    check_error(mosquittopp::publish(&mid, topic.c_str(), payload.size(), payload.c_str(), qos, retain));
 }
 
 void ofxMosquitto::subscribe(int mid, string sub, int qos)
 {
-    int ret = mosquittopp::subscribe(&mid, sub.c_str(), qos);
-    if (0 < ret) ofLogError("ofxMosquitto") << mosqpp::strerror(ret);
+    check_error(mosquittopp::subscribe(&mid, sub.c_str(), qos));
 }
 
 void ofxMosquitto::unsubscribe(int mid, string sub)
 {
-    int ret = mosquittopp::unsubscribe(&mid, sub.c_str());
-    if (0 < ret) ofLogError("ofxMosquitto") << mosqpp::strerror(ret);
+    check_error(mosquittopp::unsubscribe(&mid, sub.c_str()));
 }
 
 void ofxMosquitto::start()
@@ -135,7 +126,7 @@ void ofxMosquitto::setUsernameAndPassword(string username, string password)
     lock();
     this->username = username;
     this->password = password;
-    username_pw_set(username.c_str(), password.c_str());
+    check_error(username_pw_set(username.c_str(), password.c_str()));
     unlock();
 }
 
@@ -158,6 +149,35 @@ void ofxMosquitto::setUserdata(void *userdata)
     lock();
     this->userdata = userdata;
     unlock();
+}
+
+void ofxMosquitto::setTls(string cafile, string capath, string certfile, string keyfile, string keyfilePath)
+{
+    int ret;
+    if (!keyfile.empty() && !keyfilePath.empty())
+    {
+        ofxMosquitto::keyfilePath = keyfilePath;
+        check_error(tls_set(cafile.c_str(), capath.c_str(), certfile.c_str(), keyfile.c_str(), *pw_callback));
+    }
+    else
+    {
+        check_error(tls_set(cafile.c_str(), capath.c_str(), certfile.c_str()));
+    }
+}
+
+void ofxMosquitto::setTlsOptions(int verifyMode, string version, string ciphers)
+{
+    check_error(tls_opts_set(verifyMode, version.c_str(), ciphers.c_str()));
+}
+
+void ofxMosquitto::setTlsInsecure(bool insecure)
+{
+    check_error(tls_insecure_set(insecure));
+}
+
+void ofxMosquitto::setPSK(string psk, string identity, string ciphers)
+{
+    check_error(tls_psk_set(psk.c_str(), identity.c_str(), ciphers.c_str()));
 }
 
 void ofxMosquitto::threadedFunction()
@@ -234,4 +254,9 @@ void ofxMosquitto::on_log(int level, const char *str)
 void ofxMosquitto::on_error()
 {
     ofLogError("ofxMosquitto") << "error";
+}
+
+void ofxMosquitto::check_error(int ret)
+{
+    if (0 < ret) ofLogError("ofxMosquitto") << mosqpp::strerror(ret);
 }

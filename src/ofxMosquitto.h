@@ -27,13 +27,13 @@ public:
     ofxMosquitto(string clientID, string host, int port, bool cleanSession=true);
     ~ofxMosquitto();
     
-    void setup(string host, int port, int keepAlive = 60);
+    void setup(string host, int port, int keepAlive=60);
     void reinitialise(string clientID, bool cleanSession);
     void connect();
     void connect(string bindAddress);
     void reconnect();
     void disconnect();
-    void publish(string topic, string payload);
+    void publish(int mid, string topic, string payload, int qos=0, bool retain=false);
     void subscribe(int mid, string sub, int qos = 0);
     void unsubscribe(int mid, string sub);
     
@@ -53,6 +53,10 @@ public:
     void setKeepAlive(int keepAlive);
     void setAutoReconnect(bool reconnect);
     void setUserdata(void *userdata);
+    void setTls(string cafile, string capath=NULL, string certfile=NULL, string keyfile=NULL, string keyfilePath=NULL);
+    void setTlsOptions(int verifyMode, string version=NULL, string ciphers=NULL);
+    void setTlsInsecure(bool insecure);
+    void setPSK(string psk, string identity, string ciphers=NULL);
     
     ofEvent<int> onConnect;
     ofEvent<ofxMosquittoMessage> onMessage;
@@ -72,7 +76,7 @@ private:
     bool bConnected;
     bool bAutoReconnect;
     void *userdata;
-    string timestamp;
+    static string keyfilePath;
     
     void on_connect(int rc);
     void on_disconnect(int rc);
@@ -82,4 +86,12 @@ private:
     void on_unsubscribe(int mid);
     void on_log(int level, const char *str);
     void on_error();
+    
+    void check_error(int ret);
+    
+    static int pw_callback(char *buf, int size, int rwflag, void *userdata)
+    {
+        strcpy(buf, keyfilePath.c_str());
+        return (int)keyfilePath.size();
+    }
 };
