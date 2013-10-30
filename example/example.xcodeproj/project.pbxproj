@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4218A23C1820D379002AADE4 /* libmosquitto.1.2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4218A23A1820D379002AADE4 /* libmosquitto.1.2.2.dylib */; };
-		4218A23D1820D379002AADE4 /* libmosquittopp.1.2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4218A23B1820D379002AADE4 /* libmosquittopp.1.2.2.dylib */; };
+		428805751821AAB2003CEF37 /* libmosquitto.1.2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 428805731821AA94003CEF37 /* libmosquitto.1.2.2.dylib */; };
+		428805761821AAB2003CEF37 /* libmosquittopp.1.2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 428805741821AA94003CEF37 /* libmosquittopp.1.2.2.dylib */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		CFB6B24FD9BB4E33B80245DB /* ofxMosquitto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A3258118C4BF937F2437458F /* ofxMosquitto.cpp */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
@@ -66,8 +66,8 @@
 		069127795091624A25183F70 /* ofxMosquitto.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxMosquitto.h; path = ../../../addons/ofxMosquitto/src/ofxMosquitto.h; sourceTree = SOURCE_ROOT; };
 		4218A2381820D379002AADE4 /* mosquitto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mosquitto.h; sourceTree = "<group>"; };
 		4218A2391820D379002AADE4 /* mosquittopp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mosquittopp.h; sourceTree = "<group>"; };
-		4218A23A1820D379002AADE4 /* libmosquitto.1.2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libmosquitto.1.2.2.dylib; sourceTree = "<group>"; };
-		4218A23B1820D379002AADE4 /* libmosquittopp.1.2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libmosquittopp.1.2.2.dylib; sourceTree = "<group>"; };
+		428805731821AA94003CEF37 /* libmosquitto.1.2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libmosquitto.1.2.2.dylib; sourceTree = "<group>"; };
+		428805741821AA94003CEF37 /* libmosquittopp.1.2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libmosquittopp.1.2.2.dylib; sourceTree = "<group>"; };
 		A3258118C4BF937F2437458F /* ofxMosquitto.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxMosquitto.cpp; path = ../../../addons/ofxMosquitto/src/ofxMosquitto.cpp; sourceTree = SOURCE_ROOT; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
@@ -101,11 +101,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7F985F815E0DEA3003869B5 /* Accelerate.framework in Frameworks */,
-				4218A23C1820D379002AADE4 /* libmosquitto.1.2.2.dylib in Frameworks */,
 				E7E077E815D3B6510020DFD4 /* QTKit.framework in Frameworks */,
 				E4EB6799138ADC1D00A09F29 /* GLUT.framework in Frameworks */,
 				E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */,
-				4218A23D1820D379002AADE4 /* libmosquittopp.1.2.2.dylib in Frameworks */,
 				E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */,
 				E45BE97C0E8CC7DD009D7055 /* ApplicationServices.framework in Frameworks */,
 				E45BE97D0E8CC7DD009D7055 /* AudioToolbox.framework in Frameworks */,
@@ -119,6 +117,8 @@
 				E4C2424810CC5A17004149E2 /* Cocoa.framework in Frameworks */,
 				E4C2424910CC5A17004149E2 /* IOKit.framework in Frameworks */,
 				E7E077E515D3B63C0020DFD4 /* CoreVideo.framework in Frameworks */,
+				428805751821AAB2003CEF37 /* libmosquitto.1.2.2.dylib in Frameworks */,
+				428805761821AAB2003CEF37 /* libmosquittopp.1.2.2.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,8 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				4218A2371820D379002AADE4 /* include */,
-				4218A23A1820D379002AADE4 /* libmosquitto.1.2.2.dylib */,
-				4218A23B1820D379002AADE4 /* libmosquittopp.1.2.2.dylib */,
+				428805711821AA94003CEF37 /* lib */,
 			);
 			path = mosquitto;
 			sourceTree = "<group>";
@@ -151,6 +150,23 @@
 				4218A2391820D379002AADE4 /* mosquittopp.h */,
 			);
 			path = include;
+			sourceTree = "<group>";
+		};
+		428805711821AA94003CEF37 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				428805721821AA94003CEF37 /* osx */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		428805721821AA94003CEF37 /* osx */ = {
+			isa = PBXGroup;
+			children = (
+				428805731821AA94003CEF37 /* libmosquitto.1.2.2.dylib */,
+				428805741821AA94003CEF37 /* libmosquittopp.1.2.2.dylib */,
+			);
+			path = osx;
 			sourceTree = "<group>";
 		};
 		88DFA6F7EF7DB3AAE161CBBA /* ofxMosquitto */ = {
@@ -514,6 +530,7 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_51)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_52)",
 					/Users/otiashee/Develop/openFrameworks/of_v0.8.0_osx_release/addons/ofxMosquitto/lib/mosquitto,
+					/Users/otiashee/Develop/openFrameworks/of_v0.8.0_osx_release/addons/ofxMosquitto/lib/mosquitto/lib/osx,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)Debug";
 				WRAPPER_EXTENSION = app;
@@ -600,6 +617,7 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_50)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_51)",
 					/Users/otiashee/Develop/openFrameworks/of_v0.8.0_osx_release/addons/ofxMosquitto/lib/mosquitto,
+					/Users/otiashee/Develop/openFrameworks/of_v0.8.0_osx_release/addons/ofxMosquitto/lib/mosquitto/lib/osx,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
