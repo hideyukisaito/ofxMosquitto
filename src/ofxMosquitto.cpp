@@ -167,14 +167,14 @@ void ofxMosquitto::threadedFunction()
         if (lock())
         {
             int rc = loop();
-            if (0 < rc && bAutoReconnect)
+            if (MOSQ_ERR_SUCCESS != rc && bAutoReconnect)
             {
                 ofLogError("ofxMosquitto") << mosqpp::strerror(rc);
                 reconnect();
                 ofSleepMillis(20);
             }
+            unlock();
         }
-        unlock();
     }
 }
 
@@ -218,7 +218,6 @@ void ofxMosquitto::on_publish(int rc)
 
 void ofxMosquitto::on_subscribe(int mid, int qos_count, const int *granted_qos)
 {
-//    ofLogNotice("ofxMosquitto") << "subscribed : mid = " << mid << ", qos = " << qos_count << ", granted_qos = " << granted_qos;
     ofNotifyEvent(onSubscribe, mid, this);
 }
 

@@ -5,7 +5,7 @@
 
 class testApp : public ofBaseApp
 {
-
+    
 public:
     void setup();
     void update();
@@ -16,5 +16,5 @@ public:
     void onMosquittoConnect(int &rc);
     void onMosquittoMessageReceived(ofxMosquittoMessage &msg);
     string messageStr;
-		
+    
 };
