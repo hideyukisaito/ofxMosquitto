@@ -31,7 +31,7 @@ ofxMosquitto & ofxMosquitto::operator=(const ofxMosquitto &mom)
     return *this;
 }
 
-ofxMosquitto::ofxMosquitto(string clientID, string host, int port, bool cleanSession) : mosquittopp(clientID.c_str(), cleanSession)
+ofxMosquitto::ofxMosquitto(const string clientID, const string host, const int port, const bool cleanSession) : mosquittopp(clientID.c_str(), cleanSession)
 {
     lib_init();
     this->clientID = clientID;
@@ -52,7 +52,7 @@ ofxMosquitto::~ofxMosquitto()
     unlock();
 }
 
-void ofxMosquitto::reinitialise(string clientID, bool cleanSession)
+void ofxMosquitto::reinitialise(const string clientID, const bool cleanSession)
 {
     lock();
     this->clientID = clientID;
@@ -60,7 +60,7 @@ void ofxMosquitto::reinitialise(string clientID, bool cleanSession)
     unlock();
 }
 
-void ofxMosquitto::setup(string host, int port, int keepAlive)
+void ofxMosquitto::setup(const string host, const int port, const int keepAlive)
 {
     lock();
     this->host = host;
@@ -75,7 +75,7 @@ void ofxMosquitto::connect()
     start();
 }
 
-void ofxMosquitto::connect(string bindAddress)
+void ofxMosquitto::connect(const string bindAddress)
 {
     check_error(mosquittopp::connect(host.c_str(), port, keepAlive, bindAddress.c_str()));
     start();
@@ -92,17 +92,17 @@ void ofxMosquitto::disconnect()
     check_error(mosquittopp::disconnect());
 }
 
-void ofxMosquitto::publish(int mid, string topic, string payload, int qos, bool retain)
+void ofxMosquitto::publish(int mid, const string topic, const string payload, const int qos, const bool retain)
 {
     check_error(mosquittopp::publish(&mid, topic.c_str(), payload.size(), payload.c_str(), qos, retain));
 }
 
-void ofxMosquitto::subscribe(int mid, string sub, int qos)
+void ofxMosquitto::subscribe(int mid, const string sub, const int qos)
 {
     check_error(mosquittopp::subscribe(&mid, sub.c_str(), qos));
 }
 
-void ofxMosquitto::unsubscribe(int mid, string sub)
+void ofxMosquitto::unsubscribe(int mid, const string sub)
 {
     check_error(mosquittopp::unsubscribe(&mid, sub.c_str()));
 }
@@ -110,7 +110,7 @@ void ofxMosquitto::unsubscribe(int mid, string sub)
 void ofxMosquitto::start()
 {
     lock();
-    startThread(true, false);
+    startThread(true);
     unlock();
 }
 
@@ -121,7 +121,7 @@ void ofxMosquitto::stop()
     unlock();
 }
 
-void ofxMosquitto::setUsernameAndPassword(string username, string password)
+void ofxMosquitto::setUsernameAndPassword(const string username, const string password)
 {
     lock();
     this->username = username;
@@ -151,7 +151,7 @@ void ofxMosquitto::setUserdata(void *userdata)
     unlock();
 }
 
-void ofxMosquitto::setTls(string cafile, string capath, string certfile, string keyfile, string keyfilePath)
+void ofxMosquitto::setTls(const string cafile, const string capath, const string certfile, const string keyfile, const string keyfilePath)
 {
     int ret;
     if (!keyfile.empty() && !keyfilePath.empty())

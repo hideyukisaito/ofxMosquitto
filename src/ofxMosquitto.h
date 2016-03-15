@@ -24,18 +24,18 @@ public:
     ofxMosquitto();
     ofxMosquitto(const ofxMosquitto& mom);
     ofxMosquitto & operator=(const ofxMosquitto& mom);
-    ofxMosquitto(string clientID, string host, int port, bool cleanSession=true);
+    ofxMosquitto(const string clientID, const string host, const int port, const bool cleanSession=true);
     ~ofxMosquitto();
     
-    void setup(string host, int port, int keepAlive=60);
-    void reinitialise(string clientID, bool cleanSession);
+    void setup(const string host, const int port, const int keepAlive=60);
+    void reinitialise(const string clientID, const bool cleanSession);
     void connect();
-    void connect(string bindAddress);
+    void connect(const string bindAddress);
     void reconnect();
     void disconnect();
-    void publish(int mid, string topic, string payload, int qos=0, bool retain=false);
-    void subscribe(int mid, string sub, int qos = 0);
-    void unsubscribe(int mid, string sub);
+    void publish(int mid, const string topic, const string payload, const int qos=0, const bool retain=false);
+    void subscribe(int mid, const string sub, const int qos = 0);
+    void unsubscribe(int mid, const string sub);
     
     void threadedFunction();
     void start();
@@ -49,11 +49,11 @@ public:
     
     bool isConnected() { return bConnected; };
     
-    void setUsernameAndPassword(string username, string password);
+    void setUsernameAndPassword(const string username, const string password);
     void setKeepAlive(int keepAlive);
     void setAutoReconnect(bool reconnect);
     void setUserdata(void *userdata);
-    void setTls(string cafile, string capath=NULL, string certfile=NULL, string keyfile=NULL, string keyfilePath=NULL);
+    void setTls(const string cafile, const string capath=NULL, const string certfile=NULL, const string keyfile=NULL, const string keyfilePath=NULL);
     void setTlsOptions(int verifyMode, string version=NULL, string ciphers=NULL);
     void setTlsInsecure(bool insecure);
     void setPSK(string psk, string identity, string ciphers=NULL);
